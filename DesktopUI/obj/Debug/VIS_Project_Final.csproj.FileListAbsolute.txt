@@ -1,0 +1,10 @@
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\bin\Debug\VIS_Project_Final.exe.config
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\bin\Debug\VIS_Project_Final.exe
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\bin\Debug\VIS_Project_Final.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.csproj.AssemblyReference.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.csproj.SuggestedBindingRedirects.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.Properties.Resources.resources
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.csproj.GenerateResource.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.csproj.CoreCompileInputs.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.exe
+C:\Users\zahry\RiderProjects\VIS_Project_Final\VIS_Project_Final\obj\Debug\VIS_Project_Final.pdb

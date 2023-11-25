@@ -1,0 +1,6 @@
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\bin\Debug\Models.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\bin\Debug\Models.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\obj\Debug\Models.csproj.AssemblyReference.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\obj\Debug\Models.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Models\obj\Debug\Models.pdb

@@ -1,0 +1,13 @@
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\Generator.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\Generator.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\Faker.Net.4.8.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\Models.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\ORM.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\Models.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\ORM.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\bin\Debug\de-DE\Faker.Net.4.8.resources.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\obj\Debug\Generator.csproj.AssemblyReference.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\obj\Debug\Generator.csproj.CoreCompileInputs.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\obj\Debug\Generator.csproj.CopyComplete
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\obj\Debug\Generator.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\Generator\obj\Debug\Generator.pdb

@@ -1,0 +1,11 @@
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\bin\Debug\DesktopUI.exe.config
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\bin\Debug\DesktopUI.exe
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\bin\Debug\DesktopUI.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.csproj.AssemblyReference.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.csproj.SuggestedBindingRedirects.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.Properties.Resources.resources
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.csproj.GenerateResource.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.csproj.CoreCompileInputs.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.exe
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\DesktopUI\obj\Debug\DesktopUI.Form1.resources

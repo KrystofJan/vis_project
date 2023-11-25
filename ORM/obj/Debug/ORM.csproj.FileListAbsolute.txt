@@ -1,0 +1,11 @@
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\ORM.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\ORM.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\Models.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\System.Data.SqlClient.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\Models.pdb
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\bin\Debug\System.Data.SqlClient.xml
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\obj\Debug\ORM.csproj.AssemblyReference.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\obj\Debug\ORM.csproj.CoreCompileInputs.cache
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\obj\Debug\ORM.csproj.CopyComplete
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\obj\Debug\ORM.dll
+C:\Users\zahry\RiderProjects\VIS_Project_Final\ORM\obj\Debug\ORM.pdb
