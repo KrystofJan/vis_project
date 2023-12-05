@@ -7,6 +7,7 @@ namespace ORM
 {
     public class AddressDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Address";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT + " WHERE address_id=@address_id";
@@ -17,7 +18,6 @@ namespace ORM
         
         public static Address SelectById(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ID);
             // TODO READER and make generic
@@ -25,18 +25,19 @@ namespace ORM
             SqlDataReader reader = db.Select(command);
             Address result = Read(reader)[0];
             db.Close();
+            reader.Close();
             return result;
 
         }
         public static Collection<Address> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
 
             Collection<Address> result = Read(reader);
             db.Close();
+            reader.Close();
             return result;
 
         }
@@ -60,7 +61,6 @@ namespace ORM
 
         public static int Insert(Address address)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

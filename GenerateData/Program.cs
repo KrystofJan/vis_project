@@ -10,8 +10,11 @@ namespace GenerateData
     {
         public static void Main(string[] args)
         {
-            Address a = AddressDAO.SelectById(1);
-            Console.WriteLine(a.country);
+            Collection<Movie> a = MovieDAO.Select();
+            foreach (Movie m in a)
+            {
+                Console.WriteLine(m.movie_name);
+            }
         }
     }
 }

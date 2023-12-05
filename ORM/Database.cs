@@ -5,6 +5,30 @@ namespace ORM
 {
     public class Database
     {
+
+        private static Database _instance;
+        private static readonly object _lock = new object();
+        public Database()
+        {
+            SQLConnection = new SqlConnection();
+        }
+        
+        public static Database Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new Database();
+                    }
+                    return _instance;
+                }
+            }
+        }
+        
+        
         public static SqlConnectionStringBuilder BuildSqlConnectionStringBuilderBuilder()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
@@ -18,10 +42,7 @@ namespace ORM
         public SqlConnection SQLConnection { get; set; }
         public SqlTransaction SQLTransaction { get; set; }
     
-        public Database()
-        {
-            SQLConnection = new SqlConnection();
-        }
+       
     
         public bool Connect()
         {

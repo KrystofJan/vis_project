@@ -7,6 +7,7 @@ namespace ORM
 {
     public class MovieActorDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "movie_actor";
         public static String SQL_SELECT_ACTOR_BY_MOVIE_ID = "SELECT actor_id FROM movie_actor WHERE movie_id=@movie_id";
         public static String SQL_SELECT_MOVIE_BY_ACTOR_ID = "SELECT movie_id FROM movie_actor WHERE actor_id=@actor_id";
@@ -14,59 +15,60 @@ namespace ORM
                                           " @actor_id)";
         public static Collection<Actor> SelectActors(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ACTOR_BY_MOVIE_ID);
             command.Parameters.AddWithValue("@movie_id",id);
             SqlDataReader reader = db.Select(command);
-            Collection<Actor> result = ReadActor(reader);
+            Collection<int> result = ReadActor(reader);
+            reader.Close();
             db.Close();
-            return result;
+
+            Collection<Actor> actors = new Collection<Actor>();
+            foreach (int actorId in result)
+            {
+                actors.Add(ActorDAO.SelectById(actorId));
+            }
+            return actors;
         }
         public static Collection<Movie> SelectMovies(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_MOVIE_BY_ACTOR_ID);
             command.Parameters.AddWithValue("@actor_id",id);
             SqlDataReader reader = db.Select(command);
-            Collection<Movie> result = ReadMovie(reader);
+            Collection<int> result = ReadMovie(reader);
             db.Close();
-            return result;
+            reader.Close();
+            
+            Collection<Movie> movies = new Collection<Movie>();
+            foreach (int movieId in result)
+            {
+                movies.Add(MovieDAO.SelectById(movieId));
+            }
+            return movies;
         }
         
-        public static Collection<Actor> ReadActor(SqlDataReader reader)
+        public static Collection<int> ReadActor(SqlDataReader reader)
         {
-            Collection<Actor> result = new Collection<Actor>();
+            Collection<int> result = new Collection<int>();
             while (reader.Read())
             {
-                int actor;
-
-                actor = Convert.ToInt32(reader["actor_id"]);
-
-                Actor actr = ActorDAO.SelectById(actor);
-                result.Add(actr);
+                result.Add(Convert.ToInt32(reader["actor_id"])); 
             }
             return result;
         }
-        public static Collection<Movie> ReadMovie(SqlDataReader reader)
+        public static Collection<int> ReadMovie(SqlDataReader reader)
         {
-            Collection<Movie> result = new Collection<Movie>();
+            Collection<int> result = new Collection<int>();
             while (reader.Read())
             {
-                int movie;
-
-                movie = Convert.ToInt32(reader["movie_id"]);
-
-                Movie mvi = MovieDAO.SelectById(movie);
-                result.Add(mvi);
+                result.Add(Convert.ToInt32(reader["movie_id"]));
             }
             return result;
         }
         
         public static void Insert(int movie_id, int actor_id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

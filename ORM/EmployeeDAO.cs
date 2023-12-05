@@ -8,15 +8,16 @@ namespace ORM
 {
     public class EmployeeDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Employee";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT + " WHERE employee_id=@employee_id";
+        
 
         public static String SQL_INSERT = "AddEmployee";
         
         public static String Insert(Employee employee)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
             command.CommandType = CommandType.StoredProcedure;
@@ -33,9 +34,13 @@ namespace ORM
             
             SqlCommand command3 = db.CreateCommand("SELECT IDENT_CURRENT('person_detail')");
             int pdid = Convert.ToInt32(command3.ExecuteScalar());
+
             PersonDetail pd = PersonDetailDAO.SelectById(pdid);
+            employee.created_date = pd.created_date;
+            employee.updated_date = pd.updated_date;
+            employee.is_active = pd.is_active;
             
-            employee.person_detail = pd;
+            employee.person_detail_id = pdid;
             SqlCommand command2 = db.CreateCommand("SELECT employee_id from employee where person_detail_id=@person_detail_id");
             command2.Parameters.AddWithValue("@person_detail_id", pdid);
             string id = Convert.ToString(command2.ExecuteScalar());
@@ -46,13 +51,13 @@ namespace ORM
         }
         public static Employee SelectById(string id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ID);
             command.Parameters.AddWithValue("@employee_id",id);
             SqlDataReader reader = db.Select(command);
             Employee result = Read(reader)[0];
             db.Close();
+            reader.Close();
             return result;
         }
         
@@ -68,8 +73,17 @@ namespace ORM
                 employee.employee_id = Convert.ToString(reader["employee_id"]);
                 employee.salary =  Convert.ToDecimal(reader["salary"]);
                 employee.storage = StorageDAO.SelectById(storage_id);
-                // TODO: Change logic so that I can find person detail data
-                employee.person_detail = PersonDetailDAO.SelectById(person_detail_id);
+
+                PersonDetail pd = PersonDetailDAO.SelectById(person_detail_id);
+                employee.first_name = pd.first_name;
+                employee.last_name = pd.last_name;
+                employee.is_active = pd.is_active;
+                employee.email = pd.email;
+                employee.created_date = pd.created_date;
+                employee.updated_date = pd.updated_date;
+                employee.phone = pd.phone;
+                employee.address = pd.address;
+                employee.person_detail_id = pd.person_detail_id;
 
                 result.Add(employee);
             }

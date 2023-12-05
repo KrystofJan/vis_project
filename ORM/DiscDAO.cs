@@ -7,6 +7,7 @@ namespace ORM
 {
     public class DiscDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Discs";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_BY_RENTAL_ID = SQL_SELECT +  " WHERE rental_id=@rental_id";
@@ -16,23 +17,23 @@ namespace ORM
         
         public static Collection<Disc> SelectByMovieId(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_BY_MOVIE_ID);
             command.Parameters.AddWithValue("@movie_id",id);
             SqlDataReader reader = db.Select(command);
             Collection<Disc> result = Read(reader);
             db.Close();
+            reader.Close();
             return result;
         }
         public static Collection<Disc> SelectByRentalId(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_BY_RENTAL_ID);
             command.Parameters.AddWithValue("@rental_id",id);
             SqlDataReader reader = db.Select(command);
             Collection<Disc> result = Read(reader);
+            reader.Close();
             db.Close();
             return result;
         }
@@ -56,18 +57,17 @@ namespace ORM
 
         public static Collection<Disc> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
             Collection<Disc> storage = Read(reader);
             db.Close();
+            reader.Close();
             return storage;
         }
         
         public static void Insert(Disc disc)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

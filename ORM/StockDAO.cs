@@ -7,6 +7,7 @@ namespace ORM
 {
     public class StockDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Stock";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_BY_MOVIE_ID = SQL_SELECT +  " WHERE movie_id=@movie_id";
@@ -16,24 +17,37 @@ namespace ORM
         
         public static Collection<Stock> SelectByMovieId(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_BY_MOVIE_ID);
             command.Parameters.AddWithValue("@movie_id",id);
             SqlDataReader reader = db.Select(command);
-            Collection<Stock> result = Read(reader);
+            Collection<Stock> result = ReadMovie(reader);
+            reader.Close();
             db.Close();
+
+            foreach (Stock stock in result)
+            {
+                stock.storage = StorageDAO.SelectById(stock.storage.storage_id);
+            }
+            
             return result;
         }
         public static Collection<Stock> SelectByStorageId(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_BY_Storage_ID);
-            command.Parameters.AddWithValue("@storage",id);
+            command.Parameters.AddWithValue("@storage_id",id);
             SqlDataReader reader = db.Select(command);
-            Collection<Stock> result = Read(reader);
+            
+            Collection<Stock> result = ReadStock(reader);
+            reader.Close();
             db.Close();
+
+            foreach (Stock stock in result)
+            {
+                stock.movie = MovieDAO.SelectById(stock.movie.movie_id);
+            }
+            
             return result;
         }
         public static Collection<Stock> Read(SqlDataReader reader)
@@ -42,13 +56,41 @@ namespace ORM
             while (reader.Read())
             {
                 Stock stock = new Stock();
-
-                int movie_id = Convert.ToInt32(reader["movie_id"]);
-                int storage_id = Convert.ToInt32(reader["storage_id"]);
-                stock.movie = MovieDAO.SelectById(movie_id);
-                stock.storage = StorageDAO.SelectById(storage_id);
+                stock.movie = new Movie();
+                stock.movie.movie_id = Convert.ToInt32(reader["movie_id"]);
+                stock.storage = new Storage();
+                stock.storage.storage_id = Convert.ToInt32(reader["storage_id"]);
+                
                 stock.ammount = Convert.ToInt32(reader["ammount"]);
                 
+                result.Add(stock);
+            }
+            return result;
+        }
+        
+        public static Collection<Stock> ReadStock(SqlDataReader reader)
+        {
+            Collection<Stock> result = new Collection<Stock>();
+            while (reader.Read())
+            {
+                Stock stock = new Stock();
+                stock.movie = new Movie();
+                stock.movie.movie_id = Convert.ToInt32(reader["movie_id"]); 
+                stock.ammount = Convert.ToInt32(reader["ammount"]);
+                result.Add(stock);
+            }
+            return result;
+        }
+        
+        public static Collection<Stock> ReadMovie(SqlDataReader reader)
+        {
+            Collection<Stock> result = new Collection<Stock>();
+            while (reader.Read())
+            {
+                Stock stock = new Stock();
+                stock.storage = new Storage();
+                stock.storage.storage_id = Convert.ToInt32(reader["storage_id"]); 
+                stock.ammount = Convert.ToInt32(reader["ammount"]);
                 result.Add(stock);
             }
             return result;
@@ -56,18 +98,24 @@ namespace ORM
 
         public static Collection<Stock> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
-            Collection<Stock> storage = Read(reader);
+            Collection<Stock> result = Read(reader);
+            
             db.Close();
-            return storage;
+            reader.Close();
+            foreach (var res in result)
+            {
+                res.movie = MovieDAO.SelectById(res.movie.movie_id);
+                res.storage = StorageDAO.SelectById(res.storage.storage_id);
+            }
+            
+            return result;
         }
         
         public static void Insert(Stock stock)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

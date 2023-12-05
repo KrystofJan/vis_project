@@ -7,6 +7,7 @@ namespace ORM
 {
     public class StorageDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Storage";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT +  " WHERE storage_id=@storage_id";
@@ -15,13 +16,16 @@ namespace ORM
         
         public static Storage SelectById(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ID);
             command.Parameters.AddWithValue("@storage_id",id);
             SqlDataReader reader = db.Select(command);
             Storage result = Read(reader)[0];
+            reader.Close();
             db.Close();
+            
+            result.address = AddressDAO.SelectById(result.address.address_id);
+
             return result;
         }
         
@@ -34,9 +38,8 @@ namespace ORM
 
                 storage.storage_id = Convert.ToInt32(reader["storage_id"]);
                 storage.storage_name = Convert.ToString(reader["storage_name"]);
-
-                int address_id = Convert.ToInt32(reader["address_id"]);
-                storage.address = AddressDAO.SelectById(address_id);
+                storage.address = new Address();
+                storage.address.address_id = Convert.ToInt32(reader["address_id"]);
                 
                 result.Add(storage);
             }
@@ -45,18 +48,22 @@ namespace ORM
 
         public static Collection<Storage> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
             Collection<Storage> storage = Read(reader);
+            reader.Close();
             db.Close();
+
+            foreach (var s in storage)
+            {
+                s.address = AddressDAO.SelectById(s.address.address_id);
+            }
             return storage;
         }
         
         public static int Insert(Storage storage)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

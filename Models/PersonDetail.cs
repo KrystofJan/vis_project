@@ -12,7 +12,6 @@ namespace Models
         public String phone { get; set; }
         public bool is_active { get; set; }
         public DateTime created_date { get; set; }
-        public DateTime updated_data { get; set; }
-
+        public DateTime updated_date { get; set; }
     }
 }

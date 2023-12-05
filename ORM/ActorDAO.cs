@@ -7,6 +7,7 @@ namespace ORM
 {
     public class ActorDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Actor";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT + " WHERE actor_id=@actor_id";
@@ -16,16 +17,15 @@ namespace ORM
         
         public static Actor SelectById(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ID);
            
             command.Parameters.AddWithValue("@actor_id",id);
             SqlDataReader reader = db.Select(command);
             Actor result = Read(reader)[0];
+            reader.Close();
             db.Close();
             return result;
-
         }
         
         public static Collection<Actor> Read(SqlDataReader reader)
@@ -46,19 +46,17 @@ namespace ORM
 
         public static Collection<Actor> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
             Collection<Actor> result = Read(reader);
+            reader.Close();
             db.Close();
             return result;
-
         }
         
         public static int Insert(Actor actor)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

@@ -7,6 +7,7 @@ namespace ORM
 {
     public class RentalDAO
     {
+        private static Database db = Database.Instance;
         public static String TableName = "Rental";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT +  " WHERE rental_id=@rental_id";
@@ -15,13 +16,13 @@ namespace ORM
         
         public static Rental SelectById(int id)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT_ID);
             command.Parameters.AddWithValue("@rental_id",id);
             SqlDataReader reader = db.Select(command);
             Rental result = Read(reader)[0];
             db.Close();
+            reader.Close();
             return result;
         }
         
@@ -50,18 +51,17 @@ namespace ORM
 
         public static Collection<Rental> Select()
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
             SqlDataReader reader = db.Select(command);
             Collection<Rental> storage = Read(reader);
             db.Close();
+            reader.Close();
             return storage;
         }
         
         public static int Insert(Rental rental)
         {
-            Database db = new Database();
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 

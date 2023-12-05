@@ -11,6 +11,7 @@
         <AssemblyName>ORM</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,7 +49,7 @@
         <Compile Include="Database.cs" />
         <Compile Include="DiscDAO.cs" />
         <Compile Include="EmployeeDAO.cs" />
-        <Compile Include="Movie.cs" />
+        <Compile Include="MovieDAO.cs" />
         <Compile Include="MovieActorDAO.cs" />
         <Compile Include="PersonDetailDAO.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

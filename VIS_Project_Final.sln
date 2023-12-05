@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Gene
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateData", "GenerateData\GenerateData.csproj", "{863F7130-71A1-4E46-B97C-4013F2C83E7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{7C849C03-4B0B-49D0-BDBA-23CD2989AEB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{A871606B-50FD-42F7-9640-3B7B88F70C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,9 +32,9 @@ Global
 		{863F7130-71A1-4E46-B97C-4013F2C83E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{863F7130-71A1-4E46-B97C-4013F2C83E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{863F7130-71A1-4E46-B97C-4013F2C83E7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C849C03-4B0B-49D0-BDBA-23CD2989AEB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C849C03-4B0B-49D0-BDBA-23CD2989AEB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C849C03-4B0B-49D0-BDBA-23CD2989AEB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C849C03-4B0B-49D0-BDBA-23CD2989AEB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A871606B-50FD-42F7-9640-3B7B88F70C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A871606B-50FD-42F7-9640-3B7B88F70C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A871606B-50FD-42F7-9640-3B7B88F70C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A871606B-50FD-42F7-9640-3B7B88F70C09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
