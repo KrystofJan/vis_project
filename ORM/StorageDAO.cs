@@ -11,6 +11,11 @@ namespace ORM
         public static String TableName = "Storage";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT +  " WHERE storage_id=@storage_id";
+        public static String SQL_SELECT_Search = "select storage.* from" +
+                                                 " storage inner join address on address.address_id =" +
+                                                 " storage.storage_id\nwhere street LIKE @sub or city LIKE @sub or" +
+                                                 " storage_name LIKE @sub;";
+        
         public static String SQL_INSERT = "Insert into " + TableName + " (storage_name, address_id) values (@storage_name," +
                                           " @address_id)";
         
@@ -28,6 +33,23 @@ namespace ORM
 
             return result;
         }
+        public static Collection<Storage> Search(string sub)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_SELECT_Search);
+            command.Parameters.AddWithValue("@sub",$"%{sub}%");
+            SqlDataReader reader = db.Select(command);
+            Collection<Storage> result = Read(reader);
+            reader.Close();
+            db.Close();
+            foreach (var s in result)
+            {
+                s.address = AddressDAO.SelectById(s.address.address_id);
+            }
+
+            return result;
+        }
+        
         
         public static Collection<Storage> Read(SqlDataReader reader)
         {

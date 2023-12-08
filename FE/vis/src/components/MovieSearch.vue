@@ -4,10 +4,15 @@ import url from '../config/config.js';
 let input = ref("");
 let inputLegacy = ref("");
 const apiData = ref([]);
-const prop = defineProps(['storage'])
+const prop = defineProps(['storage', 'dropdown']);
+const emit = defineEmits();
 
 const fetchData = async () => {
-    
+    if (!prop.dropdown){
+        emit('emit-input', input);
+        
+        return;
+    }
     try {
         if(input.value != inputLegacy.value){
             inputLegacy.value = input.value
@@ -33,7 +38,7 @@ function filteredItems() {
 <template>
     <div class="SearchWrapper">
         <input class="SearchBar" type="text" v-model="input" @input="fetchData" placeholder="Vyhledej filmy..." />
-        <div class="DropDown-wrapper" v-if="input!=''">
+        <div class="DropDown-wrapper" v-if="input!='' && prop.dropdown == true">
             <div class="DropDown" v-for="item in filteredItems()" :key="item.movie_id">
                 <span class="DropDown-item DropDown-name">{{ item.movie_name }}</span>
                 <span class="DropDown-item DropDown-add" @click="$emit('movie-select', item)">

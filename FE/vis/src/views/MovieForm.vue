@@ -13,6 +13,7 @@ const movie = ref({
 
 const createdId = ref(0);
 const filePath = ref('');
+const Success = ref(false);
 
 function file_path(event) {
     console.log(event.target.value);
@@ -54,23 +55,20 @@ const buildMovie = async () => {
         }
     } )
     .then(data => {
-      console.log('Response:', data);
-      createdId.value = data;
-    //   Error.value = false;
-    //   Success.value =true;
+        console.log('Response:', data);
+        createdId.value = data;
+        Success.value =true;
     })
     .catch(error => {
         console.error('Error:', error);
-        console.log("sdsd");
-        // Error.value = true;
-        // Success.value =false;
+        alert('Chyba!', error);
     });
 };
 </script>
 
 <template>
     <div v-if="!globalState.prof"> 
-<div class="Form">
+<div v-if="!Success"  class="Form">
     <div class="FormItem movie">
         <label for="movieName">Název filmu</label>
         <input class="FormItem-item" type="text" id="movieName" v-model="movie.movie_name">
@@ -115,6 +113,8 @@ const buildMovie = async () => {
       </div>
     </div>
 </div>
+<div v-if="Success">
+Uspesne vytvereny film {{ createdId }}</div>
 </div>
 <div v-else>
     Musite byt prihlasen jako zamestnanec
@@ -173,6 +173,7 @@ const buildMovie = async () => {
         flex-flow: row wrap;
         justify-content: center; 
         gap: 2rem;
+        height: auto;
     }
 
     .submit-button{

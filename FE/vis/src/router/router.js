@@ -20,6 +20,17 @@ const routes = [
         path: '/movie-list',
         name: 'MovieList',
         component: () => import('../views/MovieList.vue')
+    },
+    
+    {
+        path: '/movie-detail/:id',
+        name: 'MovieDetail',
+        component: () => import('../views/MovieDetail.vue')
+    },
+    {
+        path: '/add-actor',
+        name: 'Přidat herce',
+        component: () => import('../views/AddActor.vue')
     }
 ];
 

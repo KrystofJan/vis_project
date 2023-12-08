@@ -15,7 +15,7 @@ inject('globalState', globalState);
 <template>
 <Header />
 <router-view v-slot="{Component}">
-  <component :is="Component" :user="prof" />
+  <component :is="Component" />
 </router-view>
 </template>
 

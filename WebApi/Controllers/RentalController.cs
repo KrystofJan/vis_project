@@ -20,7 +20,12 @@ public class RentalController : ControllerBase
     public async Task<ActionResult<Rental>> Post(RentalPost s)
     {
         // TODO Important check the body
-        
+
+        if (s.startDate > s.endDate)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, "Cannot pass in a startDate that's before endDate");
+        }
+
         try
         {
             if (s == null)

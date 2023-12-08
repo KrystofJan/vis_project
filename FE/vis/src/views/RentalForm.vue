@@ -69,15 +69,11 @@ const buildRental = async () => {
     .then(data => {
       console.log('Response:', data);
       createdId.value = data;
-      Error.value = false;
       Success.value =true;
-      // Handle the response data as needed
     })
     .catch(error => {
         console.error('Error:', error);
-        console.log("sdsd");
-        Error.value = true;
-        Success.value =false;
+        alert('Chyba!');
     });
 };
 
@@ -126,7 +122,7 @@ onMounted(fetchData);
 
       <div class="FormItem">
         <label class="FormItem-label" for="storages">Vyber filp</label>
-        <MovieSearch class="FormItem-item" @movie-select="handleSearchEmit" :storage="RentalObject.storage_id"/>
+        <MovieSearch class="FormItem-item" @movie-select="handleSearchEmit" :storage="RentalObject.storage_id" :dropdown="true"/>
       </div>
       <div class="FormItem">
         <label class="FormItem-label" for="storages">Vybrane filmy</label>
@@ -151,7 +147,7 @@ onMounted(fetchData);
       
     </div>
     <div v-if="Success" class="success">
-      Objednávka {{ R }} 
+      Objednávka {{ createdId }} 
     </div>
 </div>
 <div v-else>
@@ -161,6 +157,7 @@ onMounted(fetchData);
 
 <style scoped lang="scss">
 .form{
+  font-size: 1.5rem;
   display: flex;
   flex-direction: column;
   padding: 5rem;
@@ -173,6 +170,8 @@ onMounted(fetchData);
 
     &-label{
       grid-column: 1;
+      text-align: right;
+      transform: translateX(-50%);
     }
 
     &-item{

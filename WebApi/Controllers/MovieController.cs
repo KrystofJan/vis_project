@@ -44,11 +44,35 @@ public class MovieController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
     {
+
         try
         {
+
             if (movie == null)
                 return BadRequest();
 
+            if (movie.movie_name == "")
+            {
+                return BadRequest();
+            }
+
+            if (movie.actors.Count <= 0)
+            {
+                return BadRequest();
+            }
+            if (movie.price_per_day <= 0)
+            {
+                return BadRequest();
+            }
+            Collection<Movie> allMovies = MovieDAO.Select();
+            foreach (var m in allMovies)
+            {
+                if (m.movie_name == movie.movie_name)
+                {
+                    return BadRequest();
+                };
+            }
+            
             int id = MovieDAO.Insert(movie);
 
             return StatusCode(StatusCodes.Status201Created, $"Successfully created an actor with {id} id");

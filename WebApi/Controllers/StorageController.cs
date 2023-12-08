@@ -21,6 +21,11 @@ public class StorageController : ControllerBase
     {
         return StorageDAO.SelectById(id);
     }
+    [HttpGet("/search/{sub}")]
+    public IEnumerable<Storage> Search(string sub)
+    {
+        return StorageDAO.Search(sub);
+    }
     
     [HttpGet]
     public IEnumerable<Storage> Get()

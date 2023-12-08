@@ -21,7 +21,7 @@ const prop = defineProps(['movie']);
     background: white;
     color: #1E3050;
     padding: 2rem;
-    width: calc(30% - 9rem);
+    width: calc(37% - 9rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
