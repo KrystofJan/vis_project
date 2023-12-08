@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using ORM;
@@ -26,6 +27,18 @@ public class MovieController : ControllerBase
     public Movie GetId(int id)
     {
         return MovieDAO.SelectById(id);
+    }
+    
+    [HttpGet("search/{name}/{storage}")]
+    public Collection<Movie> GetName(string name, int storage)
+    {
+        return MovieDAO.SelectByName(name, storage);
+    }
+    
+    [HttpGet("search/{name}")]
+    public Collection<Movie> GetName(string name)
+    {
+        return MovieDAO.Search(name);
     }
     
     [HttpPost]

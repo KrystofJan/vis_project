@@ -12,6 +12,8 @@ namespace ORM
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT + " WHERE actor_id=@actor_id";
 
+        public static String SQL_Search =
+            "select TOP 5 * from actor where lower(first_name) like @sub or lower(last_name) like @sub";
         public static String SQL_INSERT = "Insert into " + TableName + " (first_name, last_name) values (@first_name," +
                                           " @last_name)";
         
@@ -48,6 +50,19 @@ namespace ORM
         {
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_SELECT);
+            SqlDataReader reader = db.Select(command);
+            Collection<Actor> result = Read(reader);
+            reader.Close();
+            db.Close();
+            return result;
+        }
+        
+        
+        public static Collection<Actor> Search(string sub)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_Search);
+            command.Parameters.AddWithValue("@sub", $"%{sub}%");
             SqlDataReader reader = db.Select(command);
             Collection<Actor> result = Read(reader);
             reader.Close();

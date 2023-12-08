@@ -21,8 +21,8 @@ namespace ORM
             command.Parameters.AddWithValue("@rental_id",id);
             SqlDataReader reader = db.Select(command);
             Rental result = Read(reader)[0];
-            db.Close();
             reader.Close();
+            db.Close();
             return result;
         }
         
@@ -78,5 +78,51 @@ namespace ORM
 
             return id;
         }
+        
+        public static int Insert(RentalPost rental)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_INSERT);
+
+            command.Parameters.AddWithValue("@customer_id", rental.customer_id);
+            command.Parameters.AddWithValue("@date_of_return", rental.endDate);
+            command.Parameters.AddWithValue("@date_of_start", rental.startDate);
+            command.Parameters.AddWithValue("@employee_id", rental.employee_id);
+            
+            int ret = db.ExecuteNonQuery(command);
+            
+            SqlCommand command2 = db.CreateCommand("SELECT IDENT_CURRENT('Rental')");
+            int id = Convert.ToInt32(command2.ExecuteScalar());
+            db.Close();
+
+            Rental r = new Rental();
+            r.rental_id = id;
+            
+            foreach (Movie m in rental.movies)
+            {
+                // TODO IMP ! handle duplicates
+                if (DiscDAO.SelectAll(m.movie_id, id).Count <= 0)
+                {
+                        DiscDAO.Insert(new Disc()
+                        {
+                            ammount=1,
+                            movie = m,
+                            rental = r
+                        });
+                        StockDAO.Reduce(m.movie_id, rental.storage_id, 1);
+                }
+                else
+                {
+                    if (DiscDAO.Update(id, m.movie_id) > 0)
+                    {
+                        StockDAO.Reduce(m.movie_id, rental.storage_id, 1);
+                    }
+                }
+            }
+            
+            
+            return r.rental_id;
+        }
+        
     }
 }

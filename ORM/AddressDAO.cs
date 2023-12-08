@@ -24,8 +24,9 @@ namespace ORM
             command.Parameters.AddWithValue("@address_id",id);
             SqlDataReader reader = db.Select(command);
             Address result = Read(reader)[0];
-            db.Close();
             reader.Close();
+            db.Close();
+            
             return result;
 
         }

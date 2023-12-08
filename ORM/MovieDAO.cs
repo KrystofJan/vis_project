@@ -11,9 +11,11 @@ namespace ORM
         public static String TableName = "Movie";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
         public static String SQL_SELECT_ID = SQL_SELECT +  " WHERE movie_id=@movie_id";
-        public static String SQL_INSERT = "Insert into " + TableName + " (movie_name, price_per_day) values (@movie_name," +
-                                          " @price_per_day)";
-        
+        public static String SQL_INSERT = "Insert into " + TableName + " (movie_name, price_per_day, picture_path) values (@movie_name," +
+                                          " @price_per_day, @picture_path)";
+        public static String SQL_SELECT_SUB = "select TOP 10 m.* from movie m inner join stock s on m.movie_id = s.movie_id where s.storage_id = @storage and lower(m.movie_name) LIKE @name; ";
+        public static String SQL_SELECT_SUB_Only = "select TOP 5 * from movie where lower(movie_name) LIKE @name";
+
         public static Movie SelectById(int id)
         {
             db.Connect();
@@ -29,6 +31,47 @@ namespace ORM
             return result;
         }
         
+        public static Collection<Movie> SelectByName(string sub, int storage)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_SELECT_SUB);
+            command.Parameters.AddWithValue("@name", $"%{sub}%");
+            command.Parameters.AddWithValue("@storage", storage);
+            SqlDataReader reader = db.Select(command);
+            Collection<Movie> result = Read(reader);
+            reader.Close();
+            reader.Dispose();
+            command.Dispose();
+            db.Close();
+            
+            foreach (Movie movie in result)
+            {
+                movie.actors =  MovieActorDAO.SelectActors(movie.movie_id);
+            }
+            
+            return result;
+        }
+        
+        public static Collection<Movie> Search(string sub)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_SELECT_SUB_Only);
+            command.Parameters.AddWithValue("@name", $"%{sub}%");
+            SqlDataReader reader = db.Select(command);
+            Collection<Movie> result = Read(reader);
+            reader.Close();
+            reader.Dispose();
+            command.Dispose();
+            db.Close();
+            
+            foreach (Movie movie in result)
+            {
+                movie.actors =  MovieActorDAO.SelectActors(movie.movie_id);
+            }
+            
+            return result;
+        }
+        
         public static Collection<Movie> Read(SqlDataReader reader)
         {
             Collection<Movie> result = new Collection<Movie>();
@@ -39,6 +82,7 @@ namespace ORM
                 movie.movie_id = Convert.ToInt32(reader["movie_id"]);
                 movie.movie_name = Convert.ToString(reader["movie_name"]);
                 movie.price_per_day = Convert.ToDecimal(reader["price_per_day"]);
+                movie.picture_path = Convert.ToString(reader["picture_path"]);
                 
                 result.Add(movie);
             }
@@ -68,6 +112,7 @@ namespace ORM
 
             command.Parameters.AddWithValue("@movie_name", movie.movie_name);
             command.Parameters.AddWithValue("@price_per_day", movie.price_per_day);
+            command.Parameters.AddWithValue("@picture_path", movie.picture_path);
             
             int ret = db.ExecuteNonQuery(command);
             

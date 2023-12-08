@@ -11,6 +11,9 @@ namespace ORM
         private static Database db = Database.Instance;
         public static String TableName = "Customer";
         public static String SQL_SELECT = "SELECT * FROM "+ TableName;
+
+        public static String SQL_SELECT_ALL =
+            "select person_detail.*, customer.customer_id, customer.total_rentals from customer inner join person_detail on customer.person_detail_id = person_detail.person_detail_id";
         public static String SQL_SELECT_ID = SQL_SELECT + " WHERE customer_id=@customer_id";
 
         public static String SQL_INSERT = "AddCustomer";
@@ -54,8 +57,19 @@ namespace ORM
             command.Parameters.AddWithValue("@customer_id",id);
             SqlDataReader reader = db.Select(command);
             Customer result = Read(reader)[0];
-            db.Close();
             reader.Close();
+            db.Close();
+            return result;
+        }
+        
+        public static Collection<Customer> Select()
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_SELECT_ALL);
+            SqlDataReader reader = db.Select(command);
+            Collection<Customer> result = Read(reader);
+            reader.Close();
+            db.Close();
             return result;
         }
         
@@ -70,16 +84,14 @@ namespace ORM
                 customer.customer_id = Convert.ToString(reader["customer_id"]);
                 customer.total_rentals = Convert.ToInt32(reader["total_rentals"]);
                 
-                PersonDetail pd = PersonDetailDAO.SelectById(person_detail_id);
-                customer.first_name = pd.first_name;
-                customer.last_name = pd.last_name;
-                customer.is_active = pd.is_active;
-                customer.email = pd.email;
-                customer.created_date = pd.created_date;
-                customer.updated_date = pd.updated_date;
-                customer.phone = pd.phone;
-                customer.address = pd.address;
-                customer.person_detail_id = pd.person_detail_id;
+               customer.person_detail_id = Convert.ToInt32(reader["person_detail_id"]);
+               customer.created_date = Convert.ToDateTime(reader["created_date"]);
+               customer.updated_date = Convert.ToDateTime(reader["updated_data"]);
+               customer.email = Convert.ToString(reader["email"]);
+               customer.first_name = Convert.ToString(reader["first_name"]);
+               customer.last_name = Convert.ToString(reader["last_name"]);
+               customer.is_active = Convert.ToBoolean(reader["is_active"]);
+               customer.phone = Convert.ToString(reader["phone"]);
 
                 result.Add(customer);
             }

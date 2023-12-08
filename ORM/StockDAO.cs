@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.SqlClient;
 using Models;
 
@@ -14,6 +15,7 @@ namespace ORM
         public static String SQL_SELECT_BY_Storage_ID = SQL_SELECT +  " WHERE storage_id=@storage_id";
         public static String SQL_INSERT = "Insert into " + TableName + " (movie_id, storage_id, ammount) values (@movie_id," +
                                           " @storage_id, @ammount)";
+        public static String SQL_REDUCE_AMMOUNT = "ReduceAmount";
         
         public static Collection<Stock> SelectByMovieId(int id)
         {
@@ -124,6 +126,21 @@ namespace ORM
             command.Parameters.AddWithValue("@ammount", stock.ammount);
 
             db.ExecuteNonQuery(command);
+        }
+
+        public static void Reduce(int movie_id, int storage_id ,int amount)
+        {
+            db.Connect();
+            SqlCommand command = db.CreateCommand(SQL_REDUCE_AMMOUNT);
+            command.CommandType = CommandType.StoredProcedure;
+            
+            command.Parameters.AddWithValue("@movie_id", movie_id);
+            command.Parameters.AddWithValue("@storage_id",storage_id );
+            command.Parameters.AddWithValue("@reducer", amount);
+        
+            command.ExecuteNonQuery();
+            
+            db.Close();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using ORM;
@@ -26,6 +27,13 @@ public class ActorController : ControllerBase
     public Actor GetId(int id)
     {
         return ActorDAO.SelectById(id);
+    }
+    
+        
+    [HttpGet("search/{name}")]
+    public Collection<Actor> GetId(string name)
+    {
+        return ActorDAO.Search(name);
     }
     
     [HttpPost]

@@ -49,6 +49,7 @@
         <Compile Include="PersonDetail.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Rental.cs" />
+        <Compile Include="RentalPost.cs" />
         <Compile Include="Stock.cs" />
         <Compile Include="Storage.cs" />
     </ItemGroup>
