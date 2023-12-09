@@ -29,9 +29,6 @@ const handleInputEmit = async (input) => {
 </div>
 <div class="MovieWrapper">
     <MovieDisplayButton v-for="movie in apiData" :movie="movie" :key="movie.movie_id"/>
-
-
-
 </div>
 </template>
 

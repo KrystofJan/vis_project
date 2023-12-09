@@ -53,7 +53,7 @@ public class MovieController : ControllerBase
 
             if (movie.movie_name == "")
             {
-                return BadRequest();
+                return BadRequest("Žádný název filmu");
             }
 
             if (movie.actors.Count <= 0)
@@ -75,7 +75,7 @@ public class MovieController : ControllerBase
             
             int id = MovieDAO.Insert(movie);
 
-            return StatusCode(StatusCodes.Status201Created, $"Successfully created an actor with {id} id");
+            return StatusCode(StatusCodes.Status201Created, id);
         }
         catch (Exception)
         {

@@ -46,7 +46,7 @@ public class StockController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<Stock>> Post(Stock s)
+    public async Task<ActionResult<Stock>> Post(StockPost s)
     {
         try
         {

@@ -98,7 +98,7 @@ onMounted(fetchData);
 </script>
 
 <template>
-  <h1>data</h1>
+  <h1>Vytvořit objednávku</h1>
 <div v-if="!globalState.prof">
     <div v-if="!Success" class="form">
 
@@ -121,7 +121,7 @@ onMounted(fetchData);
       </div>
 
       <div class="FormItem">
-        <label class="FormItem-label" for="storages">Vyber filp</label>
+        <label class="FormItem-label" for="storages">Vyber film</label>
         <MovieSearch class="FormItem-item" @movie-select="handleSearchEmit" :storage="RentalObject.storage_id" :dropdown="true"/>
       </div>
       <div class="FormItem">
@@ -156,6 +156,9 @@ onMounted(fetchData);
 </template>
 
 <style scoped lang="scss">
+h1{
+  margin: 1.5rem 0 0 3rem;
+}
 .form{
   font-size: 1.5rem;
   display: flex;

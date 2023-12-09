@@ -1,8 +1,9 @@
 <script setup>
-import { ref, inject } from 'vue';
+import { ref, inject, onMounted } from 'vue';
 import url from '../config/config.js';
 import ActorSearch from '../components/ActorSearch.vue';
 import ActorButton from '../components/ActorButton.vue';
+
 const globalState = inject('globalState');
 const movie = ref({
     actors: [],
@@ -14,6 +15,9 @@ const movie = ref({
 const createdId = ref(0);
 const filePath = ref('');
 const Success = ref(false);
+const storageId = ref(0);
+const ammount = ref(0);
+const storages = ref([]);
 
 function file_path(event) {
     console.log(event.target.value);
@@ -29,11 +33,59 @@ function handleDeleteActorEmit(id){
     movie.value.actors.splice(index, 1);
 }
 
-document.addEventListener('change', () => {
-    const input = document.querySelector('#movieImage');
-    movie.value.picture_path = input.value;
-});
+const fetchStorages = async () => {
+    try {
+        const response = await fetch(url.url + 'storage/');
+        const data = await response.json();
+        storages.value = data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+};
 
+const addStock = async () => {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+            movie_id: createdId.value,
+            storage_id: storageId.value,
+            ammount: document.querySelector('#movieNumber').value
+        })
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(url.url + 'stock/', requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    reject('Špatná data');
+                }
+            })
+            .then(data => {
+                console.log('Response:', data);
+                // createdId.value = data;
+                Success.value = true;
+                resolve(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                console.log({
+                    movie_id: createdId.value,
+                    storage_id: storageId.value,
+                    ammount: document.querySelector('#movieNumber').value
+                });
+                Success.value = false;
+                alert('Nastala chyba při vytváření záznamu o kopii na skladě!', error);
+                reject(error);
+            });
+    });
+}
 const buildMovie = async () => {
   const requestOptions = {
         method: 'POST',
@@ -45,25 +97,44 @@ const buildMovie = async () => {
         body: JSON.stringify(movie.value)
       };
 
-  fetch(url.url + 'movie/', requestOptions)
-    .then(response => {
-        if(response.ok){
-          return response.json();
-        }
-        else{
-          return Promise.reject('Request failed');
-        }
-    } )
-    .then(data => {
-        console.log('Response:', data);
-        createdId.value = data;
-        Success.value =true;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Chyba!', error);
+      return new Promise((resolve, reject) => {
+        fetch(url.url + 'movie/', requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert(response.json().value);
+                    Success.value = false;
+
+                    reject("Špatná");
+                }
+            })
+            .then(data => {
+                console.log('Response:', data);
+                createdId.value = data;
+                console.log(createdId.value);
+                resolve(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Success.value = false;
+                alert('Nastala chyba při vytváření filmu!', error);
+                reject(error);
+            });
     });
 };
+
+const build = async () => {
+    try {
+        await buildMovie();
+        await addStock();
+    } catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+    }
+}
+
+onMounted(fetchStorages);
 </script>
 
 <template>
@@ -76,6 +147,14 @@ const buildMovie = async () => {
     <div class="FormItem price">
         <label for="movieNumber">Cena za den</label>
         <input step=".01" class="FormItem-item" type="number" id="moviePrice" v-model="movie.price_per_day">
+    </div>
+    <div class="FormItem storage">
+        <label class="FormItem-label" for="storages">Vyberte sklad</label>
+        <select class="FormItem-item" name="storages" id="storages">
+          <option @click="storageId=storage.storage_id" v-for="storage in storages">
+            {{ storage.storage_name }}
+          </option>
+        </select>
     </div>
     <div class="FormItem number">
         <label for="movieNumber">Počet kusů</label>
@@ -108,7 +187,7 @@ const buildMovie = async () => {
       </div>
     </div>
     <div class="FormItem submit">
-      <div @click="buildMovie" class="submit-button">
+      <div @click="build" class="submit-button">
         Vytvoř objednávku
       </div>
     </div>
@@ -128,6 +207,7 @@ Uspesne vytvereny film {{ createdId }}</div>
     grid-template-areas:
             "name picture picture"
             "price picture picture"
+            "storage picture picture"
             "number picture picture"
             "search search search"
             "actor actor actor"

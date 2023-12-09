@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("VueCorsPolicy",
+    options.AddPolicy("AllowAll",
         builder => builder.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod());
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("VueCorsPolicy"); 
+app.UseCors("AllowAll"); 
 
 app.UseAuthorization();
 

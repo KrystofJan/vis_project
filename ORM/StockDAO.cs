@@ -116,13 +116,13 @@ namespace ORM
             return result;
         }
         
-        public static void Insert(Stock stock)
+        public static void Insert(StockPost stock)
         {
             db.Connect();
             SqlCommand command = db.CreateCommand(SQL_INSERT);
 
-            command.Parameters.AddWithValue("@storage_id", stock.storage.storage_id);
-            command.Parameters.AddWithValue("@movie_id", stock.movie.movie_id);
+            command.Parameters.AddWithValue("@storage_id", stock.storage_id);
+            command.Parameters.AddWithValue("@movie_id", stock.movie_id);
             command.Parameters.AddWithValue("@ammount", stock.ammount);
 
             db.ExecuteNonQuery(command);
