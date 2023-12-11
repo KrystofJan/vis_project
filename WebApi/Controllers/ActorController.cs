@@ -46,7 +46,7 @@ public class ActorController : ControllerBase
 
             int id = ActorDAO.Insert(actor);
 
-            return StatusCode(StatusCodes.Status201Created, $"Successfully created an actor with {id} id");
+            return StatusCode(StatusCodes.Status201Created, id);
         }
         catch (Exception)
         {

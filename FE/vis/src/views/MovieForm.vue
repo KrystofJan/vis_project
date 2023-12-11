@@ -13,16 +13,11 @@ const movie = ref({
 });
 
 const createdId = ref(0);
-const filePath = ref('');
+const filePath = ref(null);
 const Success = ref(false);
 const storageId = ref(0);
 const ammount = ref(0);
 const storages = ref([]);
-
-function file_path(event) {
-    console.log(event.target.value);
-    movie.picture_path = event.target.value;
-}
 
 function handleAddActors(actor){
     movie.value.actors.push(actor);
@@ -64,7 +59,7 @@ const addStock = async () => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    reject('Špatná data');
+                    return response.json().then(error => Promise.reject(error));
                 }
             })
             .then(data => {
@@ -103,10 +98,8 @@ const buildMovie = async () => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    alert(response.json().value);
                     Success.value = false;
-
-                    reject("Špatná");
+                    return response.json().then(error => Promise.reject(error));
                 }
             })
             .then(data => {
@@ -118,8 +111,7 @@ const buildMovie = async () => {
             .catch(error => {
                 console.error('Error:', error);
                 Success.value = false;
-                alert('Nastala chyba při vytváření filmu!', error);
-                reject(error);
+                alert(error);
             });
     });
 };
@@ -127,6 +119,7 @@ const buildMovie = async () => {
 const build = async () => {
     try {
         await buildMovie();
+        await uploadFile();
         await addStock();
     } catch (error) {
         // Handle errors here
@@ -134,10 +127,28 @@ const build = async () => {
     }
 }
 
+const uploadFile = async () => {
+    const formData = new FormData();
+    const file = document.querySelector('#movieImage').files[0];
+    console.log(file);
+    formData.append('image', file);
+
+    try {
+      await fetch("https://localhost:44317/Image/", {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('Image uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading image', error);
+    }
+}
 onMounted(fetchStorages);
 </script>
 
 <template>
+<h1>Přidat film</h1>
     <div v-if="!globalState.prof"> 
 <div v-if="!Success"  class="Form">
     <div class="FormItem movie">
@@ -188,12 +199,12 @@ onMounted(fetchStorages);
     </div>
     <div class="FormItem submit">
       <div @click="build" class="submit-button">
-        Vytvoř objednávku
+        Vytvoř film
       </div>
     </div>
 </div>
-<div v-if="Success">
-Uspesne vytvereny film {{ createdId }}</div>
+<div v-if="Success" class="success">
+Uspesne vytvořený film {{ createdId }}</div>
 </div>
 <div v-else>
     Musite byt prihlasen jako zamestnanec
@@ -202,6 +213,18 @@ Uspesne vytvereny film {{ createdId }}</div>
 </template>
 
 <style scoped lang="scss">
+h1{
+  margin: 1.5rem 0 0 3rem;
+}
+.success{
+    background: greenyellow;
+  color: darkgreen;
+  text-align: center;
+  width: fit-content;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 2rem;
+}
 .Form{
     display: grid;
     grid-template-areas:
@@ -245,7 +268,7 @@ Uspesne vytvereny film {{ createdId }}</div>
         grid-area: actor;
     }
     .submit{
-        grid-area: submit;
+        grid-column: 1/-1;
         display: block;
     }
     #MovieList{
@@ -261,9 +284,12 @@ Uspesne vytvereny film {{ createdId }}</div>
         background: orange;
         grid-column: 2;
         text-align: center;
-        color: black; 
+        color: black;
         cursor: pointer;
-        transition: .2s ease-in-out;
+        transition: 0.2s ease-in-out;
+        width: fit-content;
+        margin: auto;
+
 
         &:hover{
             background: lightsalmon;

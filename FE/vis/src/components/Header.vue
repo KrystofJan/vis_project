@@ -12,19 +12,25 @@ const changeProfile = () => {
   globalState.prof = !globalState.prof;
 };
 
+
+document.addEventListener('mousemove', (e) => {
+  const mouse = e.clientX / window.innerWidth * 100;
+  const head = document.querySelector('.Header');
+  head.style.background = `linear-gradient(##1c1b22 {})`
+})
 </script>
 
 <template>
     <div class="Header">
         <div class="Header-left Header-Part">
-            <router-link to="/" class="Header-Part-item">Dionysos</router-link>
+            <router-link to="/" class="Header-Part-item">Půjčovna filmů dionýsos</router-link>
         </div>
         <nav class="Header-right Header-Part">
+            <router-link to="/" class="Header-Part-item">Domů</router-link>
             <router-link v-if="!globalState.prof" to="/rental" class="Header-Part-item">Vytvoř objednávku</router-link>
             <router-link v-if="!globalState.prof" to="/movie" class="Header-Part-item">Přidat film</router-link>
             <router-link v-if="!globalState.prof" to="/add-actor" class="Header-Part-item">Přidat herce</router-link>
-            <router-link to="/movie-list" class="Header-Part-item">MovieList</router-link>
-            <router-link to="/" class="Header-Part-item">Esketit</router-link>
+            <router-link to="/movie-list" class="Header-Part-item">Seznam filmů</router-link>
             <svg class="usr" @click="ShowDrop = !ShowDrop" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path opacity="1" fill="#1E3050" d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
             <div class="drop" v-if="ShowDrop">
                 <label class="switch">
@@ -53,6 +59,12 @@ const changeProfile = () => {
         justify-content: space-between;
         background-color: #1c1b22;
         align-items: center;
+
+        &-right{
+            width: 40%;
+            display: flex;
+            justify-content: space-around;
+        }
         
         &-Part{
             margin: 1rem 3rem;
@@ -60,12 +72,30 @@ const changeProfile = () => {
             &-item{
                 text-decoration: none;
                 color: white;
+                transition: .25s ease-in-out;
+                position: relative;
+
+                &:after{
+                  content: '';
+                  position: absolute;    
+                  background: white;
+                  bottom: -.75rem;
+                  left: -.5rem;
+                  width: 100%;
+                  height: 1px;
+                  transition: .25s ease-in-out;
+                  opacity: 0;
+                }
+
+                &:hover{
+                  transform: translateY(-.2rem);
+                  
+                  &:after{
+                    transform: translateX(.5rem);
+                    opacity: 1;
+                }
+                }
             }
-        }
-        &-right{
-            width: 40%;
-            display: flex;
-            justify-content: space-around;
         }
     }
 

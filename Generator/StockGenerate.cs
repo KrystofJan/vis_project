@@ -12,7 +12,7 @@ namespace Generator
             stock.movie = MovieGenerate.Generate();
             stock.storage = StorageGenerate.Generate();
             stock.ammount = Faker.RandomNumber.Next(999);
-            StockDAO.Insert(stock);
+            /StockDAO.Insert(stock);
             return stock;
         }
 

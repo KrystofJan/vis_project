@@ -19,11 +19,14 @@ public class RentalController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Rental>> Post(RentalPost s)
     {
-        // TODO Important check the body
-
+        if (s.movies.Count == 0)
+        {
+            return BadRequest("Neni zadany filmy!");
+        }
+        
         if (s.startDate > s.endDate)
         {
-            return StatusCode(StatusCodes.Status400BadRequest, "Cannot pass in a startDate that's before endDate");
+            return StatusCode(StatusCodes.Status400BadRequest, "Datum vraceni je pred datem vypujceni!");
         }
 
         try

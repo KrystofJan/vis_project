@@ -22,6 +22,7 @@ const handleInputEmit = async (input) => {
 </script>
 
 <template>
+  <h1>Seznam filmů</h1>
 <div class="Form">
     <div class="FormItem">
         <MovieSearch class="FormItem--movie" :dropdown="false" @emit-input="handleInputEmit"/>
@@ -33,6 +34,9 @@ const handleInputEmit = async (input) => {
 </template>
 
 <style scoped lang="scss">
+h1{
+  margin: 1.5rem 0 0 3rem;
+}
 .block{
     display: block;
 }

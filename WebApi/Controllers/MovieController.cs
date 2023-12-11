@@ -49,7 +49,7 @@ public class MovieController : ControllerBase
         {
 
             if (movie == null)
-                return BadRequest();
+                return BadRequest("Chyba při vytváření filmu");
 
             if (movie.movie_name == "")
             {
@@ -58,18 +58,18 @@ public class MovieController : ControllerBase
 
             if (movie.actors.Count <= 0)
             {
-                return BadRequest();
+                return BadRequest("Nejsou vybrány herci!");
             }
             if (movie.price_per_day <= 0)
             {
-                return BadRequest();
+                return BadRequest("Nemůžete zadat počet < 0");
             }
             Collection<Movie> allMovies = MovieDAO.Select();
             foreach (var m in allMovies)
             {
                 if (m.movie_name == movie.movie_name)
                 {
-                    return BadRequest();
+                    return BadRequest("Film již existuje");
                 };
             }
             

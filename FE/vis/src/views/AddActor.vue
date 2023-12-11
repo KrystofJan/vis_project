@@ -4,6 +4,7 @@ import url from '../config/config.js';
 
 const globalState = inject('globalState');
 const createdId = ref(0);
+const Success = ref(false);
 
 const actor = ref({
     first_name: '',
@@ -29,22 +30,26 @@ const buildActor = async () => {
           return response.json();
         }
         else{
-          return Promise.reject('Request failed');
+          alert("Chyba!");
+          return response.json().then(error => Promise.reject(error));
         }
     } )
     .then(data => {
       console.log('Response:', data);
       createdId.value = data;
+      Success.value = true;
     })
     .catch(error => {
         console.error('Error:', error);
-        console.log("sdsd");
+        alert(error);
     });
 };
 </script>
 
 <template>
+  <h1>Vytvořit herce</h1>
 <div v-if="!globalState.prof"> 
+  <div class="Form-wrap" v-if="!Success">
     <div class="Form">
         <div class="FormItem">
             <label class="FormItem-label" for="first-name">Křestní jméno</label>
@@ -60,6 +65,9 @@ const buildActor = async () => {
         <div @click="buildActor" class="submit-button">
           Vytvoř objednávku
         </div>
+      </div></div>
+      <div class="success" v-else>
+        Herec byl uspěšně vytvořen s id {{ createdId }}
       </div>
 </div>
 
@@ -70,6 +78,19 @@ const buildActor = async () => {
 </template>
 
 <style scoped lang="scss">
+h1{
+  margin: 1.5rem 0 0 3rem;
+}
+.success{
+    background: greenyellow;
+  color: darkgreen;
+  text-align: center;
+  width: fit-content;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
 .Form{
   display: flex;
   flex-direction: column;

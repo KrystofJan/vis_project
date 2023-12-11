@@ -14,7 +14,7 @@ onMounted( () => {
 <div class="Card">
     <router-link class="CardLink" :to="my_url">
         <div class="CardImg">
-            <img :src="prop.movie.picture_path" alt="temp">
+            <img p:src="prop.movie.picture_ath" alt="temp">
         </div>
         <div class="Card-title">{{ prop.movie.movie_name }}</div>
     </router-link>

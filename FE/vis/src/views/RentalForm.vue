@@ -63,7 +63,7 @@ const buildRental = async () => {
           return response.json();
         }
         else{
-          return Promise.reject('Request failed');
+          return response.json().then(error => Promise.reject(error));
         }
     } )
     .then(data => {
@@ -73,7 +73,8 @@ const buildRental = async () => {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Chyba!');
+        console.log(error);
+        alert(error);
     });
 };
 
@@ -147,7 +148,7 @@ onMounted(fetchData);
       
     </div>
     <div v-if="Success" class="success">
-      Objednávka {{ createdId }} 
+      Objednávka {{ createdId }} byla úspěšně vytvořena!
     </div>
 </div>
 <div v-else>
@@ -156,6 +157,15 @@ onMounted(fetchData);
 </template>
 
 <style scoped lang="scss">
+.success{
+  background: greenyellow;
+  color: darkgreen;
+  text-align: center;
+  width: fit-content;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 2rem;
+}
 h1{
   margin: 1.5rem 0 0 3rem;
 }
